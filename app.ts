@@ -1,95 +1,132 @@
-// //funcion simple
-// const saludar = (): void => {
 
-//     console.log("hola");
-
+// crear una funcion que se encargue de obtener 
+// // los numeros impares y pares.
+// type ArregloNumeros = {
+//     numerosPar: number[];
+//     numerosImpar: number[];
 // }
+// type FuncionImparPar = ( numeros: number[]) => ArregloNumeros
 
-// saludar();
+// //crear funcion de impares y pares
+// const funcionParImpar: FuncionImparPar = ( numeros ) => {
 
-//funcion con parametros
+//     const numerosPar: number[] = [];
+//     const numerosImpar: number[] = [];
 
-// const saludar2 = ( mensaje: string, numero?: number ): void => {
 
-//     console.log("hola " + mensaje + '-', numero);
-
-// }
-
-// saludar2('que haces?');
-// saludar2('quiero verte');
-
-//funcion con retorno de valores y parametros
-
-// const tablasMultiplicar = ( base: number, limite?: number ): string => {
-
-//     let resultado: string = '';
-    
-//     if(!limite) limite = 10;
-
-//     for(let i = 1; i <= limite; i++){
-//         resultado += `${base} x ${i} = ${ base * i}\n`;
+//     for(let i = 0; i < numeros.length; i++) {
+//         if( numeros[i] % 2 === 0 ){
+//             numerosPar.push( numeros[i] );
+//         }else{
+//             numerosImpar.push( numeros[i] )
+//         }
 //     }
 
-//     return resultado;
+//     const respuesta = {
+//         numerosPar,
+//         numerosImpar
+//     }
 
+//     return respuesta;
 // }
 
-// let respuesta: string = tablasMultiplicar(18, 15);
-// console.log(respuesta);
+// let numeros = funcionParImpar( numbers );
 
-// respuesta = tablasMultiplicar(12, 18);
-// console.log(respuesta);
+// console.log(numeros);
 
-interface Alumno {
-    nombre: string;
-    carrera: string;
-    parcial: string;
-    calificaciones: number[];
-    promedioMinimo: number;
+
+
+
+
+// const suma = (a: number, b: number, callback: (suma: number) => void ) => {
+//     let suma = a + b;
+//     callback( suma );
+// }
+
+// suma( 18, 18, ( x ) => {
+//     console.log('la suma es: ', x)
+// });
+
+
+// const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+type ParImpar = ( numbero: number) => boolean;
+type Callback = (numerosPar: number[], numerosImpar: number[]) => void
+
+// interface Params {
+//     numeros: number[], 
+//     funcionPar: ParImpar
+//     funcionImpar: ParImpar;
+//     callback: Callback;
+// }
+
+const obtenerParImpar = ( 
+        numeros: number[], 
+        funcionPar: ParImpar, 
+        funcionImpar: ParImpar, 
+        callback: Callback
+    ) => {
+
+    const numerosPar   = numeros.filter(funcionPar);
+    const numerosImpar = numeros.filter(funcionImpar);
+
+    callback(numerosPar, numerosImpar);
 }
 
-const alumno: Alumno = {
-    nombre:'Jesus',
-    carrera:'Ing Sistemas',
-    parcial:'Segundo',
-    calificaciones: [78, 76, 73, 67, 70],
-    promedioMinimo: 70
+const esPar: ParImpar   = (numero) => numero % 2 == 0;
+const esImpar: ParImpar = (numero) => numero % 2 !== 0;
+
+const darFormat = (numerosPar: number[], numerosImpar: number[]) =>{
+    console.log(`
+        Numeros Pares: ${numerosPar}
+        Numeros Impar: ${ numerosImpar}
+    `)
 }
 
-//crear una funcion que se encargue de calcular el promedio del alumno y retornara un mensaje (debe de recibir el objeto completo)
-//mencionando el promedio actual y si esta aprobado o no en el parcial 
-// Alumno: Jesus, Promedio: ??, Parcial: segundo, Carrera: ??, AProbado: ??
+// obtenerParImpar(numbers, esPar, esImpar, darFormat);
 
-const calcularPromedio = ({calificaciones, carrera, nombre, parcial, promedioMinimo}: Alumno): string => {
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    let promedio: number,
-        totalCalificaciones: number = 0,
-        mensaje: string;
+// map, forEach, filter, reduce
 
-    for(let i = 0; i < alumno.calificaciones.length; i++) {
+numbers.forEach(( value ) => {
+    console.log(value);
+});
 
-        totalCalificaciones += calificaciones[i];
+const newArray = numbers.map(( numero ) => {
+    if( numero % 2 === 0 ){
+        return numero;
+    }
+})
 
+const pares = numbers.filter( (numero) => numero % 2 === 0 );
+
+const obtenerCalificaciones = (numeros: number[] ) => {
+    let acumulador: number = 0;
+    let promedio: number = 0;
+
+    for( let i = 0; i < numeros.length; i++){
+        acumulador += numeros[i];
     }
 
-    promedio = totalCalificaciones/calificaciones.length;
+    promedio = acumulador / numeros.length;
 
-    mensaje = `Alumno: ${nombre}, Promedio: ${promedio} Parcial: ${parcial}, Carrera: ${carrera}, AProbado: ${(promedio >= promedioMinimo) ? 'si': 'no'}`;
+    return promedio;
 
-    return mensaje;
 }
 
-const calcularPromedioLambda = ({calificaciones, carrera, nombre, parcial, promedioMinimo}: Alumno): string => {
+const obtenerCalificacionesReduce = numbers.reduce( (acumulador, currenValue ) => acumulador + currenValue, 0) / numbers.length;
 
-    const promedio = calificaciones.reduce((acumulador, currentValue) => acumulador + currentValue, 0) / calificaciones.length;
-    
-    return `Alumno: ${nombre}, Promedio: ${promedio} Parcial: ${parcial}, Carrera: ${carrera}, AProbado: ${(promedio >= promedioMinimo) ? 'si': 'no'}`;
+const user = {
+    nombre: 'carlos'
 }
 
-// let respuesta = calcularPromedio(alumno);
-let respuesta = calcularPromedioLambda(alumno);
 
-console.log(respuesta);
+
+
+
+
+
 
 
 
