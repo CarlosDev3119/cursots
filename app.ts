@@ -1,134 +1,147 @@
 
-// crear una funcion que se encargue de obtener 
-// // los numeros impares y pares.
-// type ArregloNumeros = {
-//     numerosPar: number[];
-//     numerosImpar: number[];
+
+// // Single responsability unique
+
+// interface IGalletas{
+//     sabor: string;
+//     decorar( decoracion: string): void;
 // }
-// type FuncionImparPar = ( numeros: number[]) => ArregloNumeros
-
-// //crear funcion de impares y pares
-// const funcionParImpar: FuncionImparPar = ( numeros ) => {
-
-//     const numerosPar: number[] = [];
-//     const numerosImpar: number[] = [];
 
 
-//     for(let i = 0; i < numeros.length; i++) {
-//         if( numeros[i] % 2 === 0 ){
-//             numerosPar.push( numeros[i] );
-//         }else{
-//             numerosImpar.push( numeros[i] )
-//         }
+// class Galletas implements IGalletas {
+
+//     public sabor: string;
+//     protected forma: string;
+//     private decoracion: string;
+
+//     constructor(sabor: string, forma: string, decoracion: string) {
+//         this.sabor = sabor;
+//         this.forma = forma;
+//         this.decoracion = decoracion;
 //     }
 
-//     const respuesta = {
-//         numerosPar,
-//         numerosImpar
+//     decorar( decoracion: string){
+//         this.decoracion = decoracion;
 //     }
 
-//     return respuesta;
+//     set cambiarSabor( sabor: string ){
+//         this.sabor = sabor;
+//     }
+    
+//     get obtenerGalleta(){
+
+//         return `
+//             La galleta tiene forma de: ${this.forma} 
+//             Su sabor es: ${this.sabor}
+//             con decoracion: ${this.decoracion}
+//         `
+//     }
+
 // }
 
-// let numeros = funcionParImpar( numbers );
+// const galletasMarias = new Galletas('vainilla', 'cuadrada', 'chispas de chocolate');
 
-// console.log(numeros);
+// galletasMarias.decorar('Bombon con mermelada');
 
+// galletasMarias.cambiarSabor = 'chocolate';
 
+// console.log(galletasMarias.obtenerGalleta);
 
-
-
-// const suma = (a: number, b: number, callback: (suma: number) => void ) => {
-//     let suma = a + b;
-//     callback( suma );
-// }
-
-// suma( 18, 18, ( x ) => {
-//     console.log('la suma es: ', x)
-// });
-
-
-// const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-type ParImpar = ( numbero: number) => boolean;
-type Callback = (numerosPar: number[], numerosImpar: number[]) => void
-
-// interface Params {
-//     numeros: number[], 
-//     funcionPar: ParImpar
-//     funcionImpar: ParImpar;
-//     callback: Callback;
-// }
-
-const obtenerParImpar = ( 
-        numeros: number[], 
-        funcionPar: ParImpar, 
-        funcionImpar: ParImpar, 
-        callback: Callback
-    ) => {
-
-    const numerosPar   = numeros.filter(funcionPar);
-    const numerosImpar = numeros.filter(funcionImpar);
-
-    callback(numerosPar, numerosImpar);
+interface IVeterinaria {
+    cita: string;
+    servicios: string[];
+    horario: number;
+    generarCita( fecha: string ): void;
 }
 
-const esPar: ParImpar   = (numero) => numero % 2 == 0;
-const esImpar: ParImpar = (numero) => numero % 2 !== 0;
 
-const darFormat = (numerosPar: number[], numerosImpar: number[]) =>{
-    console.log(`
-        Numeros Pares: ${numerosPar}
-        Numeros Impar: ${ numerosImpar}
-    `)
-}
+class Animal {
 
-// obtenerParImpar(numbers, esPar, esImpar, darFormat);
+    tipo: string;
+    edad: number;
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-// map, forEach, filter, reduce
-
-numbers.forEach(( value ) => {
-    console.log(value);
-});
-
-const newArray = numbers.map(( numero ) => {
-    if( numero % 2 === 0 ){
-        return numero;
-    }
-})
-
-const pares = numbers.filter( (numero) => numero % 2 === 0 );
-
-const obtenerCalificaciones = (numeros: number[] ) => {
-    let acumulador: number = 0;
-    let promedio: number = 0;
-
-    for( let i = 0; i < numeros.length; i++){
-        acumulador += numeros[i];
+    constructor(tipo: string, edad: number) {
+        this.tipo = tipo;
+        this.edad = edad;
     }
 
-    promedio = acumulador / numeros.length;
+}
 
-    return promedio;
+class Veterinaria extends Animal implements IVeterinaria {
+
+    cita: string;
+    servicios: string[];
+    horario: number;
+
+    constructor(
+        tipo: string, 
+        edad: number, 
+        horario: number
+    ){
+
+        super(tipo, edad);
+        this.cita = '';
+        this.servicios = ['baño', 'corte de pelo', 'anestecia'];
+        this.horario = horario;
+    }
+
+    
+    get obtenerServicios(){
+        
+        let serviciosDisponibles: string = '';
+        
+        this.servicios.forEach( servicio => {
+            serviciosDisponibles += `${servicio}, `
+        })
+        
+        serviciosDisponibles = serviciosDisponibles.substring(0, serviciosDisponibles.length - 2);
+        
+        return `Servicios disponibles: ${serviciosDisponibles}`;
+    }
+    
+    set agregarServicio( servicio: string){
+        this.servicios.push(servicio);
+    }
+
+
+    generarCita( fecha: string){
+        this.cita = fecha;
+    }
+
+    generarCarnet( servicios: string[] ) {
+
+        return `
+            Tipo de Mascota: ${this.tipo}
+            Edad de Mascota: ${this.edad}
+            Horario de cita: ${this.horario}
+            Fecha: ${this.cita}
+            Servicios Contratados: ${this.servicios.filter(( servicioClase, i ) => servicioClase === servicios[i] )}
+        `
+    }
 
 }
 
-const obtenerCalificacionesReduce = numbers.reduce( (acumulador, currenValue ) => acumulador + currenValue, 0) / numbers.length;
 
-const user = {
-    nombre: 'carlos'
-}
+const veterinaria = new Veterinaria('Gato', 5 , new Date().getTime() );
 
+const servicios = veterinaria.obtenerServicios;
 
+veterinaria.generarCita( new Date().getDate().toString() + '-' + '06' )
 
+const carnet = veterinaria.generarCarnet(['baño', 'corte de pelo']);
 
-
-
-
+console.log(carnet);
 
 
 
 
 
+// const response = this.servicios.filter(( servicioClase, i ) => servicioClase === servicios[i] );
+
+// servicios.forEach( servicioCliente => {
+    
+//     if( this.servicios.includes( servicioCliente) ){
+//         serviciosDisponibles += `${ servicioCliente }, `;
+//     }
+
+// })
