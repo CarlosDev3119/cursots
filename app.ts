@@ -1,26 +1,19 @@
-
-import { Galletas, Veterinaria } from "./classes";
-
-
-const galletasMarias = new Galletas('vainilla', 'cuadrada', 'chispas de chocolate');
-
-galletasMarias.decorar('Bombon con mermelada');
-
-galletasMarias.cambiarSabor = 'chocolate';
-
-console.log(galletasMarias.obtenerGalleta);
+import { Producto, Taller } from "./classes";
 
 
+const laptop = new Producto( 'Asus TUF', 'Laptop color gris de 16 gb de ram con una tarjeta grafica 3080 y 1tb de almcenamiento ssd', 'El sistema operativo necesita un formateo');
+const taller = new Taller( laptop );
 
-const veterinaria = new Veterinaria('Gato', 5 , new Date().getTime() );
+taller.agregarServicios('Instalacion de windows');
+taller.agregarServicios('Formateo de windows');
+taller.agregarServicios('Cambio de memoria o ampliacion');
 
-veterinaria.obtenerServicios;
+console.log(taller.mostrarServicios());
 
-veterinaria.generarCita( new Date().getDate().toString() + '-' + '06' )
+console.log(taller.repararProducto());
 
-const carnet = veterinaria.generarCarnet(['baño', 'corte de pelo']);
 
-console.log(carnet);
+
 
 
 

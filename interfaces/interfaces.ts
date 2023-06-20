@@ -1,16 +1,6 @@
-
-export interface IVeterinaria {
-    cita: string;
+export interface ITaller {
     servicios: string[];
-    horario: number;
-    generarCita( fecha: string ): void;
-    generarCarnet( servicios: string[] ): string;
+    mostrarServicios():( string[] | string );
+    agregarServicios( servicio: string ): void;
+    repararProducto(): string;
 }
-
-
-export interface IGalletas{
-    sabor: string;
-    decorar( decoracion: string): void;
-}
-
-

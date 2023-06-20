@@ -1,4 +1,2 @@
-export { Galletas } from "./Galletas";
-export { Animal } from "./Animal";
-export { Veterinaria } from "./Veterinaria";
-
+export { Producto } from "./Producto";
+export { Taller } from "./Taller";
